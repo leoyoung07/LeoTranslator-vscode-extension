@@ -67,6 +67,8 @@ class LeoTranslator {
         httpBuildQuery = httpBuildQuery.substr(0, httpBuildQuery.length - 1);
         return httpBuildQuery;
     }
+
+    //TODO add parse response method
 }
 
 export { LeoTranslator };

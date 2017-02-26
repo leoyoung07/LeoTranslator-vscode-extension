@@ -11,7 +11,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.translateToEnglish"
+    "onCommand:extension.translateToEnglish",
+    "onCommand:extension.translateAndReplace"
   ],
   "main": "./out/src/extension",
   "contributes": {
@@ -19,6 +20,10 @@
       {
         "command": "extension.translateToEnglish",
         "title": "Translate To English"
+      },
+      {
+        "command": "extension.translateAndReplace",
+        "title": "Translate And Replace"
       }
     ]
   },

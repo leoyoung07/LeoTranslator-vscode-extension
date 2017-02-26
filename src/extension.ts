@@ -16,19 +16,33 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.translateToEnglish', () => {
-        // The code you place here will be executed every time your command is executed
-        let editor = vscode.window.activeTextEditor;
-        let selectedText = editor.document.getText(editor.selection);
-        let leoTranslator = new LeoTranslator();
-        leoTranslator.Translate(selectedText).then((value: string) => {
-            if (value) {
+    let translateToEnglishDisposable = vscode.commands.registerCommand('extension.translateToEnglish', () => {
+        translateSelection((editor, value) => {
                 vscode.window.showInformationMessage((JSON.parse(value)['trans_result'][0]['dst'] as string));
-            }
         });
     });
 
-    context.subscriptions.push(disposable);
+    let translateAndReplaceDisposable = vscode.commands.registerTextEditorCommand('extension.translateAndReplace', () => {
+        translateSelection((editor, value) => {
+            editor.edit((editBuilder: vscode.TextEditorEdit) => {
+                editBuilder.replace(editor.selection, (JSON.parse(value)['trans_result'][0]['dst'] as string));
+            });
+        });
+    });
+
+    context.subscriptions.push(translateToEnglishDisposable);
+    context.subscriptions.push(translateAndReplaceDisposable);
+}
+
+function translateSelection(callback: (editor: vscode.TextEditor, value: string) => void) {
+    let editor = vscode.window.activeTextEditor;
+    let selectedText = editor.document.getText(editor.selection);
+    let leoTranslator = new LeoTranslator();
+    leoTranslator.Translate(selectedText).then((value: string) => {
+        if (value) {
+            callback(editor, value);
+        }
+    });
 }
 
 // this method is called when your extension is deactivated
