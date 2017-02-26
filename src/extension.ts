@@ -3,6 +3,8 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+import { LeoTranslator } from './leo-translator';
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -14,11 +16,16 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
+    let disposable = vscode.commands.registerCommand('extension.translateToEnglish', () => {
         // The code you place here will be executed every time your command is executed
-
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
+        let editor = vscode.window.activeTextEditor;
+        let selectedText = editor.document.getText(editor.selection);
+        let leoTranslator = new LeoTranslator();
+        leoTranslator.Translate(selectedText).then((value: string) => {
+            if (value) {
+                vscode.window.showInformationMessage((JSON.parse(value)['trans_result'][0]['dst'] as string));
+            }
+        });
     });
 
     context.subscriptions.push(disposable);
