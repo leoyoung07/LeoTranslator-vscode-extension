@@ -2,7 +2,7 @@
   "name": "leo-translator",
   "displayName": "LeoTranslator",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "LeoYoung",
   "engines": {
     "vscode": "^1.5.0"
@@ -11,15 +11,15 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.translateToEnglish",
+    "onCommand:extension.translateAndInsert",
     "onCommand:extension.translateAndReplace"
   ],
   "main": "./out/src/extension",
   "contributes": {
     "commands": [
       {
-        "command": "extension.translateToEnglish",
-        "title": "Translate To English"
+        "command": "extension.translateAndInsert",
+        "title": "Translate And Insert"
       },
       {
         "command": "extension.translateAndReplace",

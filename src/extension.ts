@@ -16,17 +16,38 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let translateToEnglishDisposable = vscode.commands.registerCommand('extension.translateToEnglish', () => {
-        translateSelection((editor, value) => {
-                vscode.window.showInformationMessage((JSON.parse(value)['trans_result'][0]['dst'] as string));
+    let translateToEnglishDisposable = vscode.commands.registerCommand('extension.translateAndInsert', () => {
+        vscode.window.showInputBox().then((inputText) => {
+            let leoTranslator = new LeoTranslator();
+            leoTranslator.Translate(inputText).then((value: string) => {
+                if (value) {
+                    let translateResult = JSON.parse(value)['trans_result'][0]['dst'];
+                    if (!translateResult) {
+                        return;
+                    }
+                    let editor = vscode.window.activeTextEditor;
+                    editor.edit((editBuilder: vscode.TextEditorEdit) => {
+                        editBuilder.insert(editor.selection.start, translateResult);
+                    });
+                }
+            });
         });
     });
 
     let translateAndReplaceDisposable = vscode.commands.registerTextEditorCommand('extension.translateAndReplace', () => {
         translateSelection((editor, value) => {
-            editor.edit((editBuilder: vscode.TextEditorEdit) => {
-                editBuilder.replace(editor.selection, (JSON.parse(value)['trans_result'][0]['dst'] as string));
-            });
+            let translateResult = JSON.parse(value)['trans_result'][0]['dst'];
+            if (!translateResult) {
+                return;
+            }
+            let options = [translateResult as string];
+            vscode.window.showQuickPick(options)
+                .then((item) => {
+                    editor.edit((editBuilder: vscode.TextEditorEdit) => {
+                        editBuilder.replace(editor.selection, item);
+                    });
+                });
+
         });
     });
 
