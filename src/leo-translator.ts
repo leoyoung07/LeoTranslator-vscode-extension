@@ -6,20 +6,21 @@ import * as crypto from 'crypto';
 import * as request from 'request';
 
 class LeoTranslator {
-    constructor() {
-
+    constructor(appId: string, key: string) {
+        this.APP_ID = appId;
+        this.KEY = key;
     }
 
     private readonly BAIDU_TRANSLATE_API_URL = "http://api.fanyi.baidu.com/api/trans/vip/translate";
 
-    private readonly APP_ID = "20170225000039853";
+    private APP_ID: string;
 
-    private readonly KEY = "usbSw2CPxPSIwKPDazaZ";
+    private KEY: string;
 
     /**
      * Translate
      */
-    public async Translate(text: string, fromLanguage = 'zh', toLanguage = 'en'): Promise<string> {
+    public async Translate(text: string, fromLanguage = 'auto', toLanguage = 'auto'): Promise<string> {
         let result = '';
         if (typeof text == 'undefined' || text.trim() === '') {
             return result;
