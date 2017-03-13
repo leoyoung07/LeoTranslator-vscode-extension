@@ -25,7 +25,23 @@
         "command": "extension.translateAndReplace",
         "title": "Translate And Replace"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Leo Translator Account Configuration",
+      "properties": {
+        "leoTranslator.appId": {
+          "type": "string",
+          "default": "20170225000039853",
+          "description": "Baidu Translate API appId"
+        },
+        "leoTranslator.key": {
+          "type": "string",
+          "default": "usbSw2CPxPSIwKPDazaZ",
+          "description": "Baidu Translate API key"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
