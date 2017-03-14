@@ -3,7 +3,7 @@
   "displayName": "LeoTranslator",
   "description": "",
   "version": "0.0.4",
-  "publisher": "LeoYoung",
+  "publisher": "leoyoung",
   "engines": {
     "vscode": "^1.5.0"
   },
