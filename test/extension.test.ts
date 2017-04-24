@@ -9,7 +9,7 @@ import * as assert from 'assert';
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import * as vscode from 'vscode';
-import { LeoTranslator } from '../src/leo-translator';
+import { LeoTranslator, IResult } from '../src/leo-translator';
 import { Config } from '../src/config';
 
 
@@ -18,24 +18,24 @@ suite("Extension Tests", () => {
     let leoTranslator = new LeoTranslator(Config.APP_ID, Config.KEY);
     // Defines a Mocha unit test
     test("translate to English", () => {
-        leoTranslator.Translate('苹果').then((value: string) => {
-            assert.equal("apple", (JSON.parse(value)['trans_result'][0]['dst'] as string).toLowerCase());
+        leoTranslator.Translate('苹果').then((value: IResult) => {
+            assert.equal("apple", value.dict[0].toLowerCase());
         });
     });
 
     test("translate to Chinese", () => {
-        leoTranslator.Translate('apple').then((value: string) => {
-            assert.equal('苹果', (JSON.parse(value)['trans_result'][0]['dst'] as string));
+        leoTranslator.Translate('apple').then((value: IResult) => {
+            assert.equal('苹果', value.dict[0]);
         })
     });
 
     test("empty input", () => {
         let test;
-        leoTranslator.Translate(test).then((value: string) => {
-            assert.equal("", value);
+        leoTranslator.Translate(test).then((value: IResult) => {
+            assert.equal("", value.dict[0]);
         });
-        leoTranslator.Translate(" ").then((value: string) => {
-            assert.equal("", value);
+        leoTranslator.Translate(" ").then((value: IResult) => {
+            assert.equal("", value.dict[0]);
         });
     });
 });

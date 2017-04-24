@@ -3,7 +3,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-import { LeoTranslator } from './leo-translator';
+import { LeoTranslator, IResult } from './leo-translator';
 
 import { Config } from './config';
 
@@ -57,10 +57,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 function translate(text: string, callback: (value: string) => void) {
     let leoTranslator = new LeoTranslator(Config.APP_ID, Config.KEY);
-    leoTranslator.Translate(text).then((value: string) => {
+    leoTranslator.Translate(text).then((value: IResult) => {
         if (value) {
-            let translateResult = JSON.parse(value)['trans_result'][0]['dst'];
-            callback(translateResult);
+            callback(value.dict[0]);
         }
     });
 }
