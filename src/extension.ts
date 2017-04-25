@@ -2,9 +2,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-
-import { LeoTranslator, IResult } from './leo-translator';
-
+import { LeoTranslator } from './leo-translator';
+import { BaiduTranslatorApi } from './baidu-translator-api';
+import { IResult } from './interfaces';
 import { Config } from './config';
 
 // this method is called when your extension is activated
@@ -55,13 +55,12 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(translateAndReplaceDisposable);
 }
 
-function translate(text: string, callback: (value: string) => void) {
-    let leoTranslator = new LeoTranslator(Config.APP_ID, Config.KEY);
-    leoTranslator.Translate(text).then((value: IResult) => {
-        if (value) {
-            callback(value.dict[0]);
-        }
-    });
+async function translate(text: string, callback: (value: string) => void) {
+    let leoTranslator = new LeoTranslator(new BaiduTranslatorApi(Config.BaiduApi.APP_ID, Config.BaiduApi.KEY));
+    let result = await leoTranslator.Translate(text);
+    if (result) {
+        callback(result.dict[0]);
+    }
 }
 
 // this method is called when your extension is deactivated

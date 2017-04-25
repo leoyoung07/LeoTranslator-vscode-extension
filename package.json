@@ -30,15 +30,25 @@
       "type": "object",
       "title": "Leo Translator Account Configuration",
       "properties": {
-        "leoTranslator.appId": {
+        "leoTranslator.baiduApi.appId": {
           "type": "string",
           "default": "20170225000039853",
           "description": "Baidu Translate API appId"
         },
-        "leoTranslator.key": {
+        "leoTranslator.baiduApi.key": {
           "type": "string",
           "default": "usbSw2CPxPSIwKPDazaZ",
           "description": "Baidu Translate API key"
+        },
+        "leoTranslator.youdaoApi.key": {
+          "type": "string",
+          "default": "2002044080",
+          "description": "Youdao Translate API appId"
+        },
+        "leoTranslator.youdaoApi.keyFrom": {
+          "type": "string",
+          "default": "LeoTranslator",
+          "description": "Youdao Translate API key"
         }
       }
     }
