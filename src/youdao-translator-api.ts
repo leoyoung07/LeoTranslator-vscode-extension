@@ -1,5 +1,5 @@
 import { IResult, ITranslator } from './interfaces';
-import * as request from 'request';
+import { Util } from './util';
 
 /**
  * YoudaoTranslatorApi
@@ -7,12 +7,43 @@ import * as request from 'request';
 class YoudaoTranslatorApi implements ITranslator {
     private readonly KEY: string;
     private readonly KEY_FROM: string;
+    private readonly API_URL = 'http://fanyi.youdao.com/openapi.do';
 
     public async Translate(text: string, options?): Promise<IResult> {
-        if (!text) {
+        options = Object.assign({
+            type: 'data',
+            doctype: 'json',
+            version: '1.1'
+        }, options);
+        if (typeof text != 'string' || text.trim() == '') {
             return { dict: [''] };
         }
+        let params = {
+            type: options.type,
+            doctype: options.doctype,
+            version: options.version,
+            key: this.KEY,
+            keyfrom: this.KEY_FROM,
+            q: encodeURIComponent(text)
+        };
+        return Util.GetApiResponse(this.API_URL, this.responseParser, params);
+    }
 
+    private responseParser(response: string) {
+        let result = { dict: [''] };
+        let responseObj = JSON.parse(response);
+        if (responseObj.errorCode !== 0) {
+            console.log('error: ' + responseObj.errorCode);
+            return result;
+        }
+        if (responseObj.web) {
+            result['web'] = responseObj.web;
+            result.dict = result['web'][0]['value'];
+        }
+        if(responseObj.translation) {
+            result.dict = responseObj.translation;
+        }
+        return result;
     }
 
     constructor(key: string, keyFrom: string) {
@@ -20,3 +51,5 @@ class YoudaoTranslatorApi implements ITranslator {
         this.KEY_FROM = keyFrom;
     }
 }
+
+export { YoudaoTranslatorApi };

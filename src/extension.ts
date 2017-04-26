@@ -4,6 +4,7 @@
 import * as vscode from 'vscode';
 import { LeoTranslator } from './leo-translator';
 import { BaiduTranslatorApi } from './baidu-translator-api';
+import { YoudaoTranslatorApi } from './youdao-translator-api';
 import { IResult } from './interfaces';
 import { Config } from './config';
 
@@ -27,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
                 }
                 let editor = vscode.window.activeTextEditor;
                 editor.edit((editBuilder: vscode.TextEditorEdit) => {
-                    editBuilder.insert(editor.selection.start, value);
+                    editBuilder.insert(editor.selection.start, value[0]);
                 });
             });
         });
@@ -40,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
             if (!value) {
                 return;
             }
-            let options = [value];
+            let options = value;
             vscode.window.showQuickPick(options)
                 .then((item) => {
                     editor.edit((editBuilder: vscode.TextEditorEdit) => {
@@ -55,11 +56,12 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(translateAndReplaceDisposable);
 }
 
-async function translate(text: string, callback: (value: string) => void) {
-    let leoTranslator = new LeoTranslator(new BaiduTranslatorApi(Config.BaiduApi.APP_ID, Config.BaiduApi.KEY));
+async function translate(text: string, callback: (value: string[]) => void) {
+    // let leoTranslator = new LeoTranslator(new BaiduTranslatorApi(Config.BaiduApi.APP_ID, Config.BaiduApi.KEY));
+    let leoTranslator = new LeoTranslator(new YoudaoTranslatorApi(Config.YoudaoApi.KEY, Config.YoudaoApi.KEY_FROM));
     let result = await leoTranslator.Translate(text);
     if (result) {
-        callback(result.dict[0]);
+        callback(result.dict);
     }
 }
 
