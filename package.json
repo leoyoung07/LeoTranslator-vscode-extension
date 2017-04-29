@@ -30,6 +30,15 @@
       "type": "object",
       "title": "Leo Translator Account Configuration",
       "properties": {
+        "leoTranslator.apiType": {
+          "type": "string",
+          "default": "youdao",
+          "enum": [
+            "youdao",
+            "baidu"
+          ],
+          "description": "API Type"
+        },
         "leoTranslator.baiduApi.appId": {
           "type": "string",
           "default": "20170225000039853",

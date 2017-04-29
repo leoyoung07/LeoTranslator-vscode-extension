@@ -18,10 +18,10 @@ class BaiduTranslatorApi implements ITranslator {
      * @param text 
      * @param options 
      */
-    public async Translate(text: string, options?): Promise<IResult> {
+    public async Translate(text: string, options?): Promise<string[]> {
         options = Object.assign({ fromLanguage: 'auto', toLanguage: 'auto' }, options);
         if (typeof text != 'string' || text.trim() == '') {
-            return { dict: [''] };
+            return [''];
         }
         let salt = (new Date()).getTime();
         let paramsToCheck = this.APP_ID + text + salt + this.KEY;
@@ -35,7 +35,8 @@ class BaiduTranslatorApi implements ITranslator {
             salt: salt,
             sign: sign
         };
-        return Util.GetApiResponse(this.API_URL, this.responseParser, params);
+        let response = await Util.GetApiResponse(this.API_URL, this.responseParser, params);
+        return response.dict;
     }
 
     private responseParser(response: string) {

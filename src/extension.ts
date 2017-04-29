@@ -6,7 +6,7 @@ import { LeoTranslator } from './leo-translator';
 import { BaiduTranslatorApi } from './baidu-translator-api';
 import { YoudaoTranslatorApi } from './youdao-translator-api';
 import { IResult } from './interfaces';
-import { Config } from './config';
+import { Config, ApiType } from './config';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -57,11 +57,21 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 async function translate(text: string, callback: (value: string[]) => void) {
-    // let leoTranslator = new LeoTranslator(new BaiduTranslatorApi(Config.BaiduApi.APP_ID, Config.BaiduApi.KEY));
-    let leoTranslator = new LeoTranslator(new YoudaoTranslatorApi(Config.YoudaoApi.KEY, Config.YoudaoApi.KEY_FROM));
+    let leoTranslator: LeoTranslator;
+    switch (Config.ApiType) {
+        case ApiType[ApiType.baidu]:
+            leoTranslator = new LeoTranslator(new BaiduTranslatorApi(Config.BaiduApi.APP_ID, Config.BaiduApi.KEY));
+            break;
+        case ApiType[ApiType.youdao]:
+            leoTranslator = new LeoTranslator(new YoudaoTranslatorApi(Config.YoudaoApi.KEY, Config.YoudaoApi.KEY_FROM));
+            break;
+        default:
+            leoTranslator = new LeoTranslator(new YoudaoTranslatorApi(Config.YoudaoApi.KEY, Config.YoudaoApi.KEY_FROM));
+            break;
+    }
     let result = await leoTranslator.Translate(text);
     if (result) {
-        callback(result.dict);
+        callback(result);
     }
 }
 

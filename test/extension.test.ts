@@ -28,19 +28,19 @@ function tests(leoTranslator: LeoTranslator, apiName: string) {
     // Defines a Mocha unit test
     test(`${apiName}: translate to English`, async () => {
         let value = await leoTranslator.Translate('苹果');
-        assert.equal("apple", value.dict[0].toLowerCase());
+        assert.equal("apple", value[0].toLowerCase());
     });
 
     test(`${apiName}: translate to Chinese`, async () => {
         let value = await leoTranslator.Translate('apple');
-        assert.equal('苹果', value.dict[0]);
+        assert.equal('苹果', value[0]);
     });
 
     test(`${apiName}: empty input`, async () => {
         let test;
         let value = await leoTranslator.Translate(test);
-        assert.equal("", value.dict[0]);
+        assert.equal("", value[0]);
         value = await leoTranslator.Translate(" ");
-        assert.equal("", value.dict[0]);
+        assert.equal("", value[0]);
     });
 }
