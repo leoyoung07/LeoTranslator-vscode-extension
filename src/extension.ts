@@ -20,43 +20,37 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let translateToEnglishDisposable = vscode.commands.registerCommand('extension.translateAndInsert', () => {
-        vscode.window.showInputBox().then((inputText) => {
-            translate(inputText, (value) => {
-                if (!value) {
-                    return;
-                }
-                let editor = vscode.window.activeTextEditor;
-                editor.edit((editBuilder: vscode.TextEditorEdit) => {
-                    editBuilder.insert(editor.selection.start, value[0]);
-                });
-            });
+    let translateAndInsertDisposable = vscode.commands.registerCommand('extension.translateAndInsert', async () => {
+        let editor = vscode.window.activeTextEditor;
+        let inputText = await vscode.window.showInputBox();
+        let options = await translate(inputText);
+        if (!options) {
+            return;
+        }
+        let item = await vscode.window.showQuickPick(options);
+        editor.edit((editBuilder: vscode.TextEditorEdit) => {
+            editBuilder.insert(editor.selection.start, item);
         });
     });
 
-    let translateAndReplaceDisposable = vscode.commands.registerTextEditorCommand('extension.translateAndReplace', () => {
+    let translateAndReplaceDisposable = vscode.commands.registerTextEditorCommand('extension.translateAndReplace', async () => {
         let editor = vscode.window.activeTextEditor;
         let selectedText = editor.document.getText(editor.selection);
-        translate(selectedText, (value) => {
-            if (!value) {
-                return;
-            }
-            let options = value;
-            vscode.window.showQuickPick(options)
-                .then((item) => {
-                    editor.edit((editBuilder: vscode.TextEditorEdit) => {
-                        editBuilder.replace(editor.selection, item);
-                    });
-                });
-
+        let options = await translate(selectedText);
+        if (!options) {
+            return;
+        }
+        let item = await vscode.window.showQuickPick(options);
+        editor.edit((editBuilder: vscode.TextEditorEdit) => {
+            editBuilder.replace(editor.selection, item);
         });
     });
 
-    context.subscriptions.push(translateToEnglishDisposable);
+    context.subscriptions.push(translateAndInsertDisposable);
     context.subscriptions.push(translateAndReplaceDisposable);
 }
 
-async function translate(text: string, callback: (value: string[]) => void) {
+async function translate(text: string) {
     let leoTranslator: LeoTranslator;
     switch (Config.ApiType) {
         case ApiType[ApiType.baidu]:
@@ -69,10 +63,7 @@ async function translate(text: string, callback: (value: string[]) => void) {
             leoTranslator = new LeoTranslator(new YoudaoTranslatorApi(Config.YoudaoApi.KEY, Config.YoudaoApi.KEY_FROM));
             break;
     }
-    let result = await leoTranslator.Translate(text);
-    if (result) {
-        callback(result);
-    }
+    return await leoTranslator.Translate(text);
 }
 
 // this method is called when your extension is deactivated

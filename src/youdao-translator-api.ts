@@ -28,15 +28,19 @@ class YoudaoTranslatorApi implements ITranslator {
         };
         let response = await Util.GetApiResponse(this.API_URL, this.responseParser, params);
         let translations: string[] = [];
-        response.dict.forEach((item) => {
-            translations.push(item);
-        });
-        response.web.forEach((item) => {
-            let key = item.key;
-            item.value.forEach(v => {
-                translations.push(`${v}[${key}]`);
+        if (response.dict) {
+            response.dict.forEach((item) => {
+                translations.push(item);
             });
-        });
+        }
+        if (response.web) {
+            response.web.forEach((item) => {
+                let key = item.key;
+                item.value.forEach(v => {
+                    translations.push(`${v}[${key}]`);
+                });
+            });
+        }
         return translations;
     }
 
@@ -51,7 +55,7 @@ class YoudaoTranslatorApi implements ITranslator {
             result['web'] = responseObj.web;
             result.dict = result['web'][0]['value'];
         }
-        if(responseObj.translation) {
+        if (responseObj.translation) {
             result.dict = responseObj.translation;
         }
         return result;
