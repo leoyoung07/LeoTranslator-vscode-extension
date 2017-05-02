@@ -26,6 +26,17 @@
         "title": "Translate And Replace"
       }
     ],
+    "keybindings":[
+      {
+        "command": "extension.translateAndInsert",
+        "key": "alt+i"
+      },
+      {
+        "command": "extension.translateAndReplace",
+        "key": "alt+t",
+        "when": "editorHasSelection"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "Leo Translator Account Configuration",

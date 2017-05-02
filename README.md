@@ -4,9 +4,23 @@ This is the README for extension "leo-translator".
 
 ## Usage
 
-1. Press F1.
+- Translate And Insert
 
-1. Type "translate", then choose "Translate And Insert" or "Translate And Replace".
+    1. Press F1.
+
+    1. Type "translate", choose "Translate And Insert".
+
+    1. Keybinding: `Alt + i`.
+
+- Translate And Replace
+
+    1. Select text.
+
+    1. Press F1.
+
+    1. Type "translate", choose "Translate And Replace".
+
+    1. Keybinding: `Alt + t`.
 
 ## Source
 
