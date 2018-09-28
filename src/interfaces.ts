@@ -1,16 +1,16 @@
 interface ITranslator {
-    Translate(text: string, options?): Promise<string[]>;
+  Translate(text: string, options?): Promise<string[]>;
 }
 
 interface IResult {
-    dict: string[];
+  dict: string[];
 
-    web?: IWebResult[];
+  web?: IWebResult[];
 }
 
 interface IWebResult {
-    key: string;
-    value: string[];
+  key: string;
+  value: string[];
 }
 
-export {ITranslator, IResult};
+export { ITranslator, IResult };

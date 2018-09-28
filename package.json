@@ -26,7 +26,7 @@
         "title": "Translate And Replace"
       }
     ],
-    "keybindings":[
+    "keybindings": [
       {
         "command": "extension.translateAndInsert",
         "key": "alt+i"
@@ -80,14 +80,14 @@
     "test": "node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0",
-    "mocha": "^2.3.3",
+    "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.40",
-    "@types/mocha": "^2.2.32"
+    "@types/request": "^0.0.45",
+    "mocha": "^2.3.3",
+    "typescript": "^2.0.3",
+    "vscode": "^1.0.0"
   },
   "dependencies": {
-    "@types/request": "0.0.40",
-    "request": "^2.79.0"
+    "request": "^2.88.0"
   }
 }

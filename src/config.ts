@@ -6,7 +6,7 @@ import * as vscode from 'vscode';
 class Config {
 
     public static get BaiduApi() {
-        let baiduApiConfig = vscode.workspace.getConfiguration('leoTranslator').get('baiduApi');
+        const baiduApiConfig = vscode.workspace.getConfiguration('leoTranslator').get('baiduApi');
         return {
             APP_ID: baiduApiConfig['appId'] as string,
             KEY: baiduApiConfig['key'] as string
@@ -14,7 +14,7 @@ class Config {
     }
 
     public static get YoudaoApi() {
-        let youdaoApiConfig = vscode.workspace.getConfiguration('leoTranslator').get('youdaoApi');
+        const youdaoApiConfig = vscode.workspace.getConfiguration('leoTranslator').get('youdaoApi');
         return {
             KEY: youdaoApiConfig['key'] as string,
             KEY_FROM: youdaoApiConfig['keyFrom'] as string
