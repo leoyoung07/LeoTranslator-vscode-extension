@@ -9,7 +9,7 @@ class Util {
    * GetHttpBuildQuery
    * @param params
    */
-  public static GetHttpBuildQuery(params): string {
+  public static GetHttpBuildQuery(params: {[key: string]: string}): string {
     let httpBuildQuery = '';
     for (const key in params) {
       if (params.hasOwnProperty(key)) {
@@ -30,7 +30,7 @@ class Util {
   public static async GetApiResponse(
     apiUrl: string,
     responseParser: (res: string) => IResult,
-    params?
+    params: {[key: string]: string}
   ) {
     const requestUrl = apiUrl + '?' + Util.GetHttpBuildQuery(params);
     const response = await new Promise(

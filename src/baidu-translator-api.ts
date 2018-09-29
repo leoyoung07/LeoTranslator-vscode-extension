@@ -1,4 +1,4 @@
-import * as crypto from 'crypto';
+import crypto from 'crypto';
 import { ITranslator } from './interfaces';
 import { Util } from './util';
 class BaiduTranslatorApi implements ITranslator {
@@ -17,12 +17,12 @@ class BaiduTranslatorApi implements ITranslator {
      * @param text
      * @param options
      */
-    public async Translate(text: string, options?): Promise<string[]> {
+    public async Translate(text: string, options?: {fromLanguage: string, toLanguage: string}): Promise<string[]> {
         options = Object.assign({ fromLanguage: 'auto', toLanguage: 'auto' }, options);
         if (typeof text !== 'string' || text.trim() === '') {
             return [''];
         }
-        const salt = (new Date()).getTime();
+        const salt = (new Date()).getTime().toString();
         const paramsToCheck = this.APP_ID + text + salt + this.KEY;
         const sign = crypto.createHash('md5').update(paramsToCheck).digest('hex');
         text = encodeURIComponent(text);

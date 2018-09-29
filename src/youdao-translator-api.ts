@@ -14,7 +14,10 @@ class YoudaoTranslatorApi implements ITranslator {
     this.KEY_FROM = keyFrom;
   }
 
-  public async Translate(text: string, options?): Promise<string[]> {
+  public async Translate(
+    text: string,
+    options?: { [key: string]: string }
+  ): Promise<string[]> {
     options = Object.assign(
       {
         doctype: 'json',
@@ -41,14 +44,14 @@ class YoudaoTranslatorApi implements ITranslator {
     );
     const translations: string[] = [];
     if (response.dict) {
-      response.dict.forEach((item) => {
+      response.dict.forEach(item => {
         translations.push(item);
       });
     }
     if (response.web) {
-      response.web.forEach((item) => {
+      response.web.forEach(item => {
         const key = item.key;
-        item.value.forEach((v) => {
+        item.value.forEach(v => {
           translations.push(`${v}[${key}]`);
         });
       });
@@ -57,7 +60,7 @@ class YoudaoTranslatorApi implements ITranslator {
   }
 
   private responseParser(response: string) {
-    const result = { dict: [''] };
+    const result: any = { dict: [''] };
     const responseObj = JSON.parse(response);
     if (responseObj.errorCode !== 0) {
       // tslint:disable-next-line:no-console

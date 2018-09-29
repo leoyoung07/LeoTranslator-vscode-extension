@@ -25,15 +25,18 @@ export function activate(context: vscode.ExtensionContext) {
     'extension.translateAndInsert',
     async () => {
       const editor = vscode.window.activeTextEditor;
-      const inputText = await vscode.window.showInputBox();
-      const options = await translate(inputText);
-      if (!options) {
-        return;
+      if (editor) {
+        const inputText = await vscode.window.showInputBox();
+        const options = await translate(inputText);
+        if (options) {
+          const item = await vscode.window.showQuickPick(options);
+          if (item) {
+            editor.edit((editBuilder: vscode.TextEditorEdit) => {
+              editBuilder.insert(editor.selection.start, item);
+            });
+          }
+        }
       }
-      const item = await vscode.window.showQuickPick(options);
-      editor.edit((editBuilder: vscode.TextEditorEdit) => {
-        editBuilder.insert(editor.selection.start, item);
-      });
     }
   );
 
@@ -41,15 +44,19 @@ export function activate(context: vscode.ExtensionContext) {
     'extension.translateAndReplace',
     async () => {
       const editor = vscode.window.activeTextEditor;
-      const selectedText = editor.document.getText(editor.selection);
-      const options = await translate(selectedText);
-      if (!options) {
-        return;
+      if (editor) {
+        const selectedText = editor.document.getText(editor.selection);
+        const options = await translate(selectedText);
+        if (!options) {
+          return;
+        }
+        const item = await vscode.window.showQuickPick(options);
+        if (item) {
+          editor.edit((editBuilder: vscode.TextEditorEdit) => {
+            editBuilder.replace(editor.selection, item);
+          });
+        }
       }
-      const item = await vscode.window.showQuickPick(options);
-      editor.edit((editBuilder: vscode.TextEditorEdit) => {
-        editBuilder.replace(editor.selection, item);
-      });
     }
   );
 
@@ -57,7 +64,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(translateAndReplaceDisposable);
 }
 
-async function translate(text: string) {
+async function translate(text: string | undefined) {
   let leoTranslator: LeoTranslator;
   switch (Config.ApiType) {
     case ApiType[ApiType.baidu]:
