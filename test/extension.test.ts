@@ -13,13 +13,9 @@ import { YoudaoTranslatorApi } from '../src/youdao-translator-api';
 
 // Defines a Mocha test suite to group tests of similar kind together
 suite('Extension Tests', () => {
-  let leoTranslator = new LeoTranslator(
-    new BaiduTranslatorApi(Config.BaiduApi.APP_ID, Config.BaiduApi.KEY)
-  );
+  let leoTranslator = new LeoTranslator(new BaiduTranslatorApi(Config.BaiduApi.APP_ID, Config.BaiduApi.KEY));
   tests(leoTranslator, 'Baidu API');
-  leoTranslator = new LeoTranslator(
-    new YoudaoTranslatorApi(Config.YoudaoApi.KEY, Config.YoudaoApi.KEY_FROM)
-  );
+  leoTranslator = new LeoTranslator(new YoudaoTranslatorApi(Config.YoudaoApi.KEY, Config.YoudaoApi.KEY_FROM));
   tests(leoTranslator, 'Youdao API');
 });
 

@@ -11,7 +11,12 @@
       ],
       "no-string-literal": false,
       "trailing-comma": false,
-      "arrow-parens": false
+      "arrow-parens": false,
+      "indent": [
+        true,
+        "spaces"
+      ],
+      "align": true
     },
     "rulesDirectory": []
 }

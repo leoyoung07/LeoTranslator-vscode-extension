@@ -14,10 +14,7 @@ class YoudaoTranslatorApi implements ITranslator {
     this.KEY_FROM = keyFrom;
   }
 
-  public async Translate(
-    text: string,
-    options?: { [key: string]: string }
-  ): Promise<string[]> {
+  public async Translate(text: string, options?: { [key: string]: string }): Promise<string[]> {
     options = Object.assign(
       {
         doctype: 'json',
@@ -37,11 +34,7 @@ class YoudaoTranslatorApi implements ITranslator {
       type: options.type,
       version: options.version
     };
-    const response = await Util.GetApiResponse(
-      this.API_URL,
-      this.responseParser,
-      params
-    );
+    const response = await Util.GetApiResponse(this.API_URL, this.responseParser, params);
     const translations: string[] = [];
     if (response.dict) {
       response.dict.forEach(item => {

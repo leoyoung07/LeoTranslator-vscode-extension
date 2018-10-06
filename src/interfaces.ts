@@ -1,5 +1,5 @@
 interface ITranslator {
-  Translate(text: string | undefined, options?: {fromLanguage: string, toLanguage: string}): Promise<string[]>;
+  Translate(text: string | undefined, options?: { fromLanguage: string; toLanguage: string }): Promise<string[]>;
 }
 
 interface IResult {

@@ -9,7 +9,7 @@ class Util {
    * GetHttpBuildQuery
    * @param params
    */
-  public static GetHttpBuildQuery(params: {[key: string]: string}): string {
+  public static GetHttpBuildQuery(params: { [key: string]: string }): string {
     let httpBuildQuery = '';
     for (const key in params) {
       if (params.hasOwnProperty(key)) {
@@ -30,24 +30,19 @@ class Util {
   public static async GetApiResponse(
     apiUrl: string,
     responseParser: (res: string) => IResult,
-    params: {[key: string]: string}
+    params: { [key: string]: string }
   ) {
     const requestUrl = apiUrl + '?' + Util.GetHttpBuildQuery(params);
-    const response = await new Promise(
-      (resolve: (value: IResult) => void, reject) => {
-        const httpRequest = request;
-        httpRequest.get(
-          requestUrl,
-          (error, res: request.RequestResponse, body) => {
-            if (!error) {
-              resolve(responseParser(body));
-            } else {
-              reject(error);
-            }
-          }
-        );
-      }
-    );
+    const response = await new Promise((resolve: (value: IResult) => void, reject) => {
+      const httpRequest = request;
+      httpRequest.get(requestUrl, (error, res: request.RequestResponse, body) => {
+        if (!error) {
+          resolve(responseParser(body));
+        } else {
+          reject(error);
+        }
+      });
+    });
     return response;
   }
 }
