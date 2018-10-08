@@ -29,11 +29,11 @@
     "keybindings": [
       {
         "command": "extension.translateAndInsert",
-        "key": "alt+i"
+        "key": "Ctrl+Shift+i"
       },
       {
         "command": "extension.translateAndReplace",
-        "key": "alt+t",
+        "key": "Ctrl+Shift+t",
         "when": "editorHasSelection"
       }
     ],
